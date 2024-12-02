@@ -1,0 +1,198 @@
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa';
+import { FiSun, FiMoon, FiMenu, FiExternalLink } from 'react-icons/fi';
+import { SiC, SiHtml5, SiCss3, SiJavascript, SiReact, SiGit, SiNodedotjs } from 'react-icons/si';
+import { FaCode, FaCodeBranch } from 'react-icons/fa'; // Generic icons for Java, APIs, and Open Source
+import { MdLanguage } from 'react-icons/md'; // Generic icon for Java
+
+
+function App() {
+  const [isHovered, setIsHovered] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [activeSection, setActiveSection] = useState('home'); // New state
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('Form submitted');
+  };
+
+  const skills = [
+    { name: 'C', icon: SiC },
+    { name: 'Java', icon: MdLanguage }, // Generic icon for Java
+    { name: 'HTML', icon: SiHtml5 },
+    { name: 'CSS', icon: SiCss3 },
+    { name: 'JavaScript', icon: SiJavascript },
+    { name: 'React.js', icon: SiReact },
+    { name: 'APIs', icon: FaCode }, // Using a generic code icon for APIs
+    { name: 'Open Source', icon: FaCodeBranch }, // Using a generic code branch icon for Open Source
+    { name: 'Git', icon: SiGit },
+    { name: 'Node.js', icon: SiNodedotjs }
+  ];
+  
+  
+  const scrollRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: scrollRef,
+    offset: ["start start", "end end"]
+  });
+
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
+  const textY = useTransform(scrollYProgress, [0, 1], ['0%', '200%']);
+
+  const handleNavClick = (id) => {
+    setIsMenuOpen(false);
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+  
+
+  useEffect(() => {
+    document.body.classList.toggle('dark', isDarkMode);
+  }, [isDarkMode]);
+
+  // Scroll event to track active section
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ['home', 'about', 'skills', 'projects', 'contact'];
+      const scrollPosition = window.scrollY;
+
+      sections.forEach((section) => {
+        const element = document.getElementById(section);
+        if (element) {
+          const sectionTop = element.offsetTop;
+          const sectionHeight = element.offsetHeight;
+
+          if (scrollPosition >= sectionTop - sectionHeight / 3 && scrollPosition < sectionTop + sectionHeight) {
+            setActiveSection(section);
+          }
+        }
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <div ref={scrollRef} className={`relative overflow-hidden transition-colors duration-300 ${isDarkMode ? 'bg-black text-white' : 'bg-white text-black'}`}>
+      {/* Background Gradient */}
+      <motion.div
+        className="absolute inset-0 z-0"
+        style={{ y: backgroundY }}
+      >
+        <div className={`absolute inset-0 ${isDarkMode ? 'bg-gradient-to-b from-transparent to-black' : 'bg-gradient-to-b from-transparent to-white '}`} />
+      </motion.div>
+
+      {/* Navigation */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-opacity-50 backdrop-blur-md">
+        <div className="container mx-auto px-6 py-3 flex justify-between items-center">
+          <motion.a
+            href="#home"
+            className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-black'}`}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            KAUSHIK
+          </motion.a>
+          <div className="flex items-center space-x-4">
+            <div className="md:hidden">
+              <button onClick={() => setIsMenuOpen(!isMenuOpen)} className={isDarkMode ? 'text-white' : 'text-black'}>
+                <FiMenu size={24} />
+              </button>
+            </div>
+            <ul className={`md:flex space-x-6 ${isMenuOpen ? 'block absolute top-full left-0 right-0 bg-opacity-50 backdrop-blur-md p-4' : 'hidden md:block'}`}>
+              {['home', 'about', 'skills', 'projects', 'contact'].map((item) => (
+                <motion.li key={item}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.1 * ['home', 'about', 'skills', 'projects', 'contact'].indexOf(item) }}
+                >
+                  <a
+                    href={`#${item}`}
+                    className={`hover:opacity-70 transition-opacity capitalize ${isDarkMode ? 'text-white' : 'text-black'} ${activeSection === item ? 'font-bold' : ''}`} // Highlight active link
+                    onClick={() => handleNavClick(item)}
+                  >
+                    {item}
+                  </a>
+                </motion.li>
+              ))}
+            </ul>
+            <button
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              className={`p-2 rounded-full ${isDarkMode ? 'bg-white text-black' : 'bg-black text-white'}`}
+            >
+              {isDarkMode ? <FiSun size={20} /> : <FiMoon size={20} />}
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Home Section */}
+      {/* Home Section */}
+      <section id="home" className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
+        <motion.h1 
+          className="text-6xl sm:text-8xl font-bold tracking-tighter z-10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          style={{ y: textY }}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          KAUSHIK
+        </motion.h1>
+        <motion.p 
+          className="mt-4 text-xl text-center max-w-md z-10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4, duration: 0.8 }}
+          style={{ y: textY }}
+        >
+          Crafting digital experiences through code and creativity.
+        </motion.p>
+        <motion.div
+          className="mt-8 z-10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8, duration: 0.8 }}
+        >
+          <a 
+            href="#contact" 
+            className={`px-6 py-3 ${isDarkMode ? 'bg-white text-black' : 'bg-black text-white'} rounded-full font-semibold hover:opacity-80 transition-opacity`}
+            onClick={(e) => {
+              e.preventDefault();
+              handleNavClick('contact');
+            }}
+          >
+            Get in touch
+          </a>
+        </motion.div>
+      </section>
+
+      {/* About Section */}
+
+      {/* Education Section */}
+
+      {/* Skills Section */}
+
+      {/* Projects Section */}
+    
+      {/* Open Source Contributions Section */}
+
+
+      {/* Badges Earned Section */}
+
+      {/* Contact Section */}
+
+      {/* Hover Effect */}
+      
+    </div>
+  );
+}
+
+export default App;
