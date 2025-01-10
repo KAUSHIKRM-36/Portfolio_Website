@@ -139,47 +139,59 @@ function App() {
         </div>
       </nav>
 
-      {/* Home Section */}
-      <section id="home" className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
-      <ThreeBackground isDarkMode={isDarkMode} />
-        <motion.h1 
-          className="text-6xl sm:text-8xl font-bold tracking-tighter z-10"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          style={{ y: textY }}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
-          KAUSHIK
-        </motion.h1>
-        <motion.p 
-          className="mt-4 text-xl text-center max-w-md z-10"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4, duration: 0.8 }}
-          style={{ y: textY }}
-        >
-          Crafting digital experiences through code and creativity.
-        </motion.p>
-        <motion.div
-          className="mt-8 z-10"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8, duration: 0.8 }}
-        >
-          <a 
-            href="#contact" 
-            className={`px-6 py-3 ${isDarkMode ? 'bg-white text-black' : 'bg-black text-white'} rounded-full font-semibold hover:opacity-80 transition-opacity`}
-            onClick={(e) => {
-              e.preventDefault();
-              handleNavClick('contact');
-            }}
-          >
-            Get in touch
-          </a>
-        </motion.div>
-      </section>
+  {/* Home Section */}
+  <section id="home" className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
+    <ThreeBackground isDarkMode={isDarkMode} />
+    <motion.h1 
+      className="text-6xl sm:text-8xl font-bold tracking-tighter z-10"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      style={{ y: textY }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      KAUSHIK
+    </motion.h1>
+    <motion.p 
+      className="mt-4 text-xl text-center max-w-md z-10"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.4, duration: 0.8 }}
+      style={{ y: textY }}
+    >
+      Crafting digital experiences through code and creativity.
+    </motion.p>
+    <motion.div
+      className="mt-8 z-10"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.8, duration: 0.8 }}
+    >
+      <a 
+        href="#contact" 
+        className={`px-6 py-3 ${isDarkMode ? 'bg-white text-black' : 'bg-black text-white'} rounded-full font-semibold hover:opacity-80 transition-opacity`}
+        onClick={(e) => {
+          e.preventDefault();
+          handleNavClick('contact');
+        }}
+      >
+        Get in touch
+      </a>
+    </motion.div>
+
+    {/* Flashing "Click and Move" Message at the bottom center */}
+    <motion.div
+      className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-2xl sm:text-2xl font-semibold text-center z-20"
+      style={{ fontFamily: "'Courier New', monospace" }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: [0, 1, 0] }}
+      transition={{ repeat: Infinity, duration: 1.5 }}
+    >
+      Click anywhere and Move
+    </motion.div>
+  </section>
+
 
       {/* About Section */}
       <section id="about" className={`min-h-screen flex flex-col items-center justify-center p-0 ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
