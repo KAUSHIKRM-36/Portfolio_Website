@@ -393,29 +393,6 @@ function App() {
           Get in Touch
         </motion.h2>
         <motion.div 
-          className="max-w-md w-full"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          viewport={{ once: true }}
-        >
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label htmlFor="name" className="block mb-2">Name</label>
-              <input type="text" id="name" name="name" required className={`w-full p-2 rounded ${isDarkMode ? 'bg-white bg-opacity-10' : 'bg-black bg-opacity-10'} focus:outline-none focus:ring-2 focus:ring-gray-400`} />
-            </div>
-            <div>
-              <label htmlFor="email" className="block mb-2">Email</label>
-              <input type="email" id="email" name="email" required className={`w-full p-2 rounded ${isDarkMode ? 'bg-white bg-opacity-10' : 'bg-black bg-opacity-10'} focus:outline-none focus:ring-2 focus:ring-gray-400`} />
-            </div>
-            <div>
-              <label htmlFor="message" className="block mb-2">Message</label>
-              <textarea id="message" name="message" required rows={4} className={`w-full p-2 rounded ${isDarkMode ? 'bg-white bg-opacity-10' : 'bg-black bg-opacity-10'} focus:outline-none focus:ring-2 focus:ring-gray-400`}></textarea>
-            </div>
-            <button type="submit" className={`w-full py-2 px-4 ${isDarkMode ? 'bg-white text-black' : 'bg-black text-white'} rounded hover:opacity-80 transition-opacity`}>Send Message</button>
-          </form>
-        </motion.div>
-        <motion.div 
           className="mt-8 flex space-x-4"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
