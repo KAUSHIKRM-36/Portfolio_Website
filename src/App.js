@@ -7,19 +7,53 @@ import { FaCode, FaCodeBranch } from 'react-icons/fa'; // Generic icons for Java
 import { MdLanguage } from 'react-icons/md'; // Generic icon for Java
 import ThreeBackground from './components/ThreeBackground';
 
+import emailjs from "@emailjs/browser";
+
 function App() {
   const [isHovered, setIsHovered] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [activeSection, setActiveSection] = useState('home'); // New state
 
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
   const toggleDarkMode = () => {
     setIsDarkMode(prevMode => !prevMode);
   };
 
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form submitted');
+
+    emailjs
+      .send(
+        "service_mn8z2mr", // Replace with your EmailJS service ID
+        "template_r7x54ve", // Replace with your EmailJS template ID
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          message: formData.message,
+        },
+        "iwLRd80h7OMWIrFwD" // Replace with your EmailJS public key
+      )
+      .then(
+        (response) => {
+          console.log("Email sent successfully!", response);
+          alert("Message sent!");
+          setFormData({ name: "", email: "", message: "" }); // Reset form
+        },
+        (error) => {
+          console.error("Error sending email:", error);
+          alert("Failed to send message.");
+        }
+      );
   };
 
   const skills = [
@@ -303,7 +337,7 @@ function App() {
             {
               title: "Spotify Clone",
               description: " A music player clone built with HTML, CSS, and JavaScript, mimicking Spotify's interface and functionality.",
-              link: "YOUR_GITHUB_LINK_FOR_SPOTIFY_CLONE" // Add your GitHub link here
+              link: "https://github.com/KAUSHIKRM-36/Project1-SpotifyClone" // Add your GitHub link here
             },
             {
               title: "E-commerce Website",
@@ -313,7 +347,7 @@ function App() {
             {
               title: "Text Summarizer",
               description: "An application that utilizes APIs to summarize text inputs effectively and efficiently",
-              link: "YOUR_GITHUB_LINK_FOR_TEXT_SUMMARIZER" // Add your GitHub link here
+              link: "https://github.com/KAUSHIKRM-36/text_summarizer" // Add your GitHub link here
             }
           ].map((project, index) => (
             <motion.div 
@@ -382,60 +416,130 @@ function App() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className={`min-h-screen flex flex-col items-center justify-center p-6 ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
-        <motion.h2 
-          className="text-4xl font-bold mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
+      <section
+      id="contact"
+      className={`min-h-screen flex flex-col items-center justify-center p-6 ${
+        isDarkMode ? "bg-black" : "bg-white"
+      }`}
+    >
+      <motion.h2
+        className="text-4xl font-bold mb-8"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        viewport={{ once: true }}
+      >
+        Get in Touch
+      </motion.h2>
+      <motion.div
+        className="max-w-md w-full"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        viewport={{ once: true }}
+      >
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="name" className="block mb-2">
+              Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              required
+              value={formData.name}
+              onChange={handleChange}
+              className={`w-full p-2 rounded ${
+                isDarkMode ? "bg-white bg-opacity-10" : "bg-black bg-opacity-10"
+              } focus:outline-none focus:ring-2 focus:ring-gray-400`}
+            />
+          </div>
+          <div>
+            <label htmlFor="email" className="block mb-2">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              value={formData.email}
+              onChange={handleChange}
+              className={`w-full p-2 rounded ${
+                isDarkMode ? "bg-white bg-opacity-10" : "bg-black bg-opacity-10"
+              } focus:outline-none focus:ring-2 focus:ring-gray-400`}
+            />
+          </div>
+          <div>
+            <label htmlFor="message" className="block mb-2">
+              Message
+            </label>
+            <textarea
+              id="message"
+              name="message"
+              required
+              rows={4}
+              value={formData.message}
+              onChange={handleChange}
+              className={`w-full p-2 rounded ${
+                isDarkMode ? "bg-white bg-opacity-10" : "bg-black bg-opacity-10"
+              } focus:outline-none focus:ring-2 focus:ring-gray-400`}
+            ></textarea>
+          </div>
+          <button
+            type="submit"
+            className={`w-full py-2 px-4 ${
+              isDarkMode ? "bg-white text-black" : "bg-black text-white"
+            } rounded hover:opacity-80 transition-opacity`}
+          >
+            Send Message
+          </button>
+        </form>
+      </motion.div>
+      <motion.div
+        className="mt-8 flex space-x-4"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
+        viewport={{ once: true }}
+      >
+        <a
+          href="https://github.com/KAUSHIKRM-36"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:opacity-70 transition-opacity"
+          aria-label="GitHub"
         >
-          Get in Touch
-        </motion.h2>
-        <motion.div 
-          className="max-w-md w-full"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          viewport={{ once: true }}
+          <FaGithub size={24} />
+        </a>
+        <a
+          href="https://www.linkedin.com/in/kaushik-rajesh-mahajan-a277aa264/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:opacity-70 transition-opacity"
+          aria-label="LinkedIn"
         >
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label htmlFor="name" className="block mb-2">Name</label>
-              <input type="text" id="name" name="name" required className={`w-full p-2 rounded ${isDarkMode ? 'bg-white bg-opacity-10' : 'bg-black bg-opacity-10'} focus:outline-none focus:ring-2 focus:ring-gray-400`} />
-            </div>
-            <div>
-              <label htmlFor="email" className="block mb-2">Email</label>
-              <input type="email" id="email" name="email" required className={`w-full p-2 rounded ${isDarkMode ? 'bg-white bg-opacity-10' : 'bg-black bg-opacity-10'} focus:outline-none focus:ring-2 focus:ring-gray-400`} />
-            </div>
-            <div>
-              <label htmlFor="message" className="block mb-2">Message</label>
-              <textarea id="message" name="message" required rows={4} className={`w-full p-2 rounded ${isDarkMode ? 'bg-white bg-opacity-10' : 'bg-black bg-opacity-10'} focus:outline-none focus:ring-2 focus:ring-gray-400`}></textarea>
-            </div>
-            <button type="submit" className={`w-full py-2 px-4 ${isDarkMode ? 'bg-white text-black' : 'bg-black text-white'} rounded hover:opacity-80 transition-opacity`}>Send Message</button>
-          </form>
-        </motion.div>
-        <motion.div 
-          className="mt-8 flex space-x-4"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          viewport={{ once: true }}
+          <FaLinkedin size={24} />
+        </a>
+        <a
+          href="https://www.instagram.com/_.kaushik._06"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:opacity-70 transition-opacity"
+          aria-label="Instagram"
         >
-          <a href="https://github.com/KAUSHIKRM-36" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity" aria-label="GitHub">
-            <FaGithub size={24} />
-          </a>
-          <a href="https://www.linkedin.com/in/kaushik-rajesh-mahajan-a277aa264/" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity" aria-label="LinkedIn">
-            <FaLinkedin size={24} />
-          </a>
-          <a href="https://www.instagram.com/_.kaushik._06" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity" aria-label="Instagram"> {/* Replace 'yourusername' with your actual Instagram username */}
-            <FaInstagram size={24} />
-          </a>
-          <a href="mailto:belikekaushik@gmail.com" className="hover:opacity-70 transition-opacity" aria-label="Email">
-            <FaEnvelope size={24} />
-          </a>
-        </motion.div>
-      </section>
+          <FaInstagram size={24} />
+        </a>
+        <a
+          href="mailto:belikekaushik@gmail.com"
+          className="hover:opacity-70 transition-opacity"
+          aria-label="Email"
+        >
+          <FaEnvelope size={24} />
+        </a>
+      </motion.div>
+    </section>
 
       {/* Hover Effect */}
       {isHovered && (
